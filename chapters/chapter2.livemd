@@ -348,27 +348,27 @@ E então resolva esses problemas:
 1. Retorne o tamanho da String "pneumoultramicroscopicossilicovulcanoconiótico".
 
 ```elixir
-
+String.length("pneumoultramicroscopicossilicovulcanoconiótico")
 ```
 
-2. Retorne uma Lista que possui os mesmos items da lista [:a, :b, :c] porém com os itens na ordem contrária, ou seja [:c, :b, :a].
+1. Retorne uma Lista que possui os mesmos items da lista [:a, :b, :c] porém com os itens na ordem contrária, ou seja [:c, :b, :a].
 
 ```elixir
-
+Enum.reverse([:a, :b, :c])
 ```
 
-3. Retorne um novo mapa que é a união desses dois mapas:
+1. Retorne um novo mapa que é a união desses dois mapas:
 
 ```elixir
-primeiro_mapa = %{ :um  =>  1, :dois => 2 }
-segundo_mapa  = %{ :tres  =>  3, :quatro => 4 }
+primeiro_mapa = %{:um => 1, :dois => 2}
+segundo_mapa = %{:tres => 3, :quatro => 4}
 ```
 
 ```elixir
-
+Map.merge(primeiro_mapa, segundo_mapa)
 ```
 
-4. Retorne uma lista de palavras da sentença:
+1. Retorne uma lista de palavras da sentença:
 
 ```elixir
 # execute essa célula de código
@@ -378,10 +378,10 @@ Como de hábito, Policarpo Quaresma, mais conhecido por Major Quaresma, bateu em
 ```
 
 ```elixir
-
+String.split(sentenca)
 ```
 
-5. Multiplique todos os itens da seguinte lista e retorne a soma de todos seus items sobrados.
+1. Multiplique todos os itens da seguinte lista e retorne a soma de todos seus items sobrados.
 
 ```elixir
 # execute essa célula de código
@@ -389,7 +389,7 @@ lista_de_numeros = [4, 8, 12, 16, 20, 24, 28, 32, 36]
 ```
 
 ```elixir
-
+Enum.reduce(lista_de_numeros, fn number, accumulator -> number * accumulator end)
 ```
 
 ### Exercício 2
@@ -423,15 +423,30 @@ Abaixo, temos um "esqueleto" da implementação. Os professores esperam que essa
 ```elixir
 defmodule AlgebraLinear do
   def soma_matrizes(matriz_a, matriz_b) do
-    # A fazer
+    if matriz_mesmo_tam?(matriz_a, matriz_b) do
+      Enum.zip_with([matriz_a, matriz_b], fn [x, y] ->
+        Enum.zip_with([x, y], fn [a, b] -> a + b end)
+      end)
+    else
+      :error
+    end
   end
 
   def subtrai_matrizes(matriz_a, matriz_b) do
-    # A fazer
+    if matriz_mesmo_tam?(matriz_a, matriz_b) do
+      Enum.zip_with([matriz_a, matriz_b], fn [x, y] ->
+        Enum.zip_with([x, y], fn [a, b] -> a - b end)
+      end)
+    else
+      :error
+    end
   end
 
   def multiplica_matrizes(matriz_a, matriz_b) do
-    # A fazer
+    if matriz_colunas!(matriz_a) == matriz_linhas!(matriz_b) do
+    else
+      :error
+    end
   end
 
   def escalar(matriz, escalar) do
@@ -441,7 +456,37 @@ defmodule AlgebraLinear do
   def determinante(matriz) do
     # A fazer
   end
+
+  defp matriz_mesmo_tam?(matriz_a, matriz_b) do
+    if Enum.count(matriz_a) == Enum.count(matriz_b) do
+      true
+    else
+      false
+    end
+  end
+
+  defp matriz_linhas!(matriz) do
+    Enum.count(matriz)
+  end
+
+  defp matriz_colunas!(matriz) do
+    if Enum.count(matriz) == 0 do
+      0
+    else
+      Enum.fetch!(matriz, 0)
+      |> Enum.count()
+    end
+  end
+
+  defp matriz_vazia?(matriz) do
+  end
 end
+
+matriz_a = [[0, 0, 1], [0, 1, 0], [1, 0, 0]]
+matriz_b = [[0, 0, 1], [0, 1, 0], [1, 0, 0]]
+AlgebraLinear.soma_matrizes(matriz_a, matriz_b)
+AlgebraLinear.subtrai_matrizes(matriz_a, matriz_b)
+AlgebraLinear.multiplica_matrizes(matriz_a, matriz_b)
 ```
 
 ### Exercício 3
